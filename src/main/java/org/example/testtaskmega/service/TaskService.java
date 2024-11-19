@@ -7,7 +7,6 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
-import org.springframework.cache.annotation.Cacheable;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,18 +19,11 @@ public class TaskService {
     @Autowired
     private final CacheManager cacheManager;
 
-//    public TaskService(CacheManager cacheManager) {
-//        this.cacheManager = cacheManager;
-//    }
     @Autowired
     public TaskService(CacheManager cacheManager, TaskRepository taskRepository) {
         this.cacheManager = cacheManager;
         this.taskRepository = taskRepository;
     }
-    // Создание задачи
-//    public Task createTask(Task task) {
-//        return taskRepository.save(task);
-//    }
 // Создание задачи
     @CacheEvict(value = "tasks", allEntries = true)
     public Task createTask(Task task) {
@@ -50,25 +42,6 @@ public class TaskService {
 
         return savedTask;
     }
-    // Получение всех задач
-//    public List<Task> getAllTasks() {
-//        return taskRepository.findAll();
-//    }
-// Получение всех задач с кэшированием
-//    public List<Task> getAllTasks() {
-//        Cache cache = cacheManager.getCache("tasks");
-//        if (cache != null && cache.get("tasks") != null) {
-//            System.out.println("Fetching tasks from cache...");
-//            return (List<Task>) cache.get("tasks").get();
-//        } else {
-//            System.out.println("Fetching tasks from database...");
-//            List<Task> tasks = taskRepository.findAll();
-//            if (cache != null) {
-//                cache.put("tasks", tasks);
-//            }
-//            return tasks;
-//        }
-//    }
     public List<Task> getAllTasks() {
         Cache cache = cacheManager.getCache("tasks");
         if (cache != null && cache.get("tasks") != null) {
